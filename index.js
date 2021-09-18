@@ -15,5 +15,5 @@ main()
   .catch((err) => console.error(err));
 
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/test');
+  await mongoose.connect('mongodb://localhost:27017/portfolio');
 }

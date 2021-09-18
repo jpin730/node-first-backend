@@ -5,6 +5,6 @@ const projectController = require('../controllers/project');
 
 const router = express.Router();
 
-router.get('/home', projectController.home);
+router.post('/projects', projectController.postProject);
 
 module.exports = router;

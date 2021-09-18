@@ -7,7 +7,7 @@ const projectSchema = mongoose.Schema({
   description: String,
   category: String,
   year: Number,
-  langs: [String],
+  langs: String,
 });
 
 module.exports = mongoose.model('Project', projectSchema);
