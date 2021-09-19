@@ -90,6 +90,22 @@ const controller = {
       }
     );
   },
+
+  deleteProject: (req, res) => {
+    const { id } = req.params;
+
+    Project.findByIdAndDelete(id, (err, projectToRemove) => {
+      if (err) {
+        return res.status(500).send();
+      }
+
+      if (!projectToRemove) {
+        return res.status(404).send();
+      }
+
+      return res.status(200).send(projectToRemove);
+    });
+  },
 };
 
 module.exports = controller;
