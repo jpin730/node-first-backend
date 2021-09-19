@@ -6,13 +6,18 @@ const port = 3700;
 
 main()
   .then(() => {
+    // eslint-disable-next-line no-console
     console.log('Successfully connected to the database');
 
     app.listen(port, () => {
+      // eslint-disable-next-line no-console
       console.log(`Server is running: http://localhost:${port}`);
     });
   })
-  .catch((err) => console.error(err));
+  .catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error(err);
+  });
 
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/portfolio');
