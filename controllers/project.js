@@ -6,11 +6,13 @@ const controller = {
   getProject: (req, res) => {
     const { id } = req.params;
 
-    console.log(id);
+    if (id.length !== 24) {
+      return res.status(404).send();
+    }
 
     Project.findById(id, (err, project) => {
       if (err) {
-        return res.status(500).send('Error');
+        return res.status(500).send();
       }
 
       if (!project) {
@@ -25,7 +27,7 @@ const controller = {
   getProjects: (req, res) => {
     Project.find().exec((err, projects) => {
       if (err) {
-        return res.status(500).send('Error');
+        return res.status(500).send();
       }
 
       if (!projects) {
@@ -41,23 +43,52 @@ const controller = {
     const { name, description, category, year, langs } = req.body;
 
     if (!name || !description || !category || !year || !langs) {
-      res.status(400).send();
-      return;
+      return res.status(400).send();
     }
 
     const project = new Project({ name, description, category, year, langs });
 
-    project.save((err, projectStored) => {
+    project.save((err, projectPosted) => {
       if (err) {
         return res.status(500).send('Error');
       }
 
-      if (!projectStored) {
-        return res.status(500).send('Not stored');
+      if (!projectPosted) {
+        return res.status(500).send('Not posted');
       }
 
-      return res.status(201).send(projectStored);
+      return res.status(201).send(projectPosted);
     });
+  },
+
+  putProject: (req, res) => {
+    const { id } = req.params;
+
+    const { name, description, category, year, langs } = req.body;
+
+    if (id.length !== 24) {
+      return res.status(404).send();
+    }
+
+    if (!name || !description || !category || !year || !langs) {
+      return res.status(400).send();
+    }
+
+    Project.findByIdAndUpdate(
+      id,
+      { name, description, category, year, langs },
+      (err, projectToUpdate) => {
+        if (err) {
+          return res.status(500).send();
+        }
+
+        if (!projectToUpdate) {
+          return res.status(404).send();
+        }
+
+        return res.status(201).send(projectToUpdate);
+      }
+    );
   },
 };
 
