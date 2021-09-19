@@ -6,7 +6,7 @@ const app = express();
 
 // routers
 
-const projectRouter = require('./routes/project');
+const projectRouter = require('./routes/project.router');
 
 // middleware
 

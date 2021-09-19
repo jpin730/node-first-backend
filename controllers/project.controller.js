@@ -1,6 +1,6 @@
 'use strict';
 
-const Project = require('../models/project');
+const Project = require('../models/project.model');
 
 const controller = {
   getProject: (req, res) => {
