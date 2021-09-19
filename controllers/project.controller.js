@@ -1,6 +1,7 @@
 'use strict';
 
 const Project = require('../models/project.model');
+const fs = require('fs');
 
 const controller = {
   getProject: (req, res) => {
@@ -77,16 +78,17 @@ const controller = {
     Project.findByIdAndUpdate(
       id,
       { name, description, category, year, langs },
-      (err, projectToUpdate) => {
+      { new: true },
+      (err, projectUpdated) => {
         if (err) {
           return res.status(500).send();
         }
 
-        if (!projectToUpdate) {
+        if (!projectUpdated) {
           return res.status(404).send();
         }
 
-        return res.status(201).send(projectToUpdate);
+        return res.status(201).send(projectUpdated);
       }
     );
   },
@@ -105,6 +107,43 @@ const controller = {
 
       return res.status(200).send(projectToRemove);
     });
+  },
+
+  putProjectImage: (req, res) => {
+    const { id } = req.params;
+
+    if (id.length !== 24) {
+      return res.status(404).send();
+    }
+
+    const { image } = req.files;
+    const imageName = image.path.split('/').pop();
+    const imageExtension = imageName.split('.').pop().toLowerCase();
+    const validExtensions = ['jpg', 'jpeg', 'png'];
+
+    if (image && validExtensions.includes(imageExtension)) {
+      Project.findByIdAndUpdate(
+        id,
+        { image: imageName },
+        { new: true },
+        (err, projectUpdated) => {
+          if (err) {
+            return res.status(500).send();
+          }
+
+          if (!projectUpdated) {
+            return res.status(404).send();
+          }
+
+          return res.status(201).send(projectUpdated);
+        }
+      );
+    } else {
+      if (image) {
+        fs.unlink(image.path, () => {});
+      }
+      return res.status(400).send();
+    }
   },
 };
 
