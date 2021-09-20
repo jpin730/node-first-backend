@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
 
@@ -12,6 +13,10 @@ const projectRouter = require('./routes/project.router');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// CORS config
+
+app.use(cors());
 
 // routes
 
