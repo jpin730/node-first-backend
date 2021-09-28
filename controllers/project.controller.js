@@ -2,6 +2,7 @@
 
 const Project = require('../models/project.model');
 const fs = require('fs');
+const path = require('path');
 
 const controller = {
   getProject: (req, res) => {
@@ -17,8 +18,7 @@ const controller = {
       }
 
       if (!project) {
-        res.status(404).send();
-        return;
+        return res.status(404).send();
       }
 
       return res.status(200).send(project);
@@ -32,8 +32,7 @@ const controller = {
       }
 
       if (!projects) {
-        res.status(404).send();
-        return;
+        return res.status(404).send();
       }
 
       return res.status(200).send(projects);
@@ -106,6 +105,32 @@ const controller = {
       }
 
       return res.status(200).send(projectToRemove);
+    });
+  },
+
+  getProjectImage: (req, res) => {
+    const { id } = req.params;
+
+    Project.findById(id, (err, project) => {
+      if (err) {
+        return res.status(500).send();
+      }
+
+      if (!project || !project.image) {
+        return res.status(404).send();
+      }
+
+      const imagePath = `./uploads/${project.image}`;
+
+      fs.access(imagePath, (err) => {
+        if (err) {
+          return err.code === 'ENOENT'
+            ? res.status(404).send()
+            : res.status(500).send();
+        }
+
+        return res.status(200).sendFile(path.resolve(imagePath));
+      });
     });
   },
 

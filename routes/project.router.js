@@ -13,6 +13,7 @@ router.get('/projects/', projectController.getProjects);
 router.post('/projects', projectController.postProject);
 router.put('/projects/:id', projectController.putProject);
 router.delete('/projects/:id', projectController.deleteProject);
+router.get('/projects/:id/image', projectController.getProjectImage);
 router.put(
   '/projects/:id/image',
   multipartMiddleware,
