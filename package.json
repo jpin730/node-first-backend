@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "prettier": "npx prettier --write .",
-    "start": "npm install && mkdir uploads -p && nodemon index.js",
+    "start": "node index.js",
+    "start-dev": "mkdir uploads -p && nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jaime Pineda",
