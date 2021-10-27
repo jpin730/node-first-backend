@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "prettier": "npx prettier --write .",
-    "start": "node index.js",
-    "start:dev": "nodemon index.js",
+    "start": "mkdir uploads -p && node index.js",
+    "start:dev": "mkdir uploads -p && nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jaime Pineda",
@@ -22,6 +22,7 @@
     "connect-multiparty": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "firebase": "^9.1.3",
     "mongoose": "^6.0.6"
   }
 }
