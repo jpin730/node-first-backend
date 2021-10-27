@@ -1,16 +1,6 @@
 'use strict';
 
 const Project = require('../models/project.model');
-const { initializeApp } = require('firebase/app');
-const { getStorage } = require('firebase/storage');
-const firebaseConfig = {
-  // apiKey: '<your-api-key>',
-  // authDomain: '<your-auth-domain>',
-  // databaseURL: '<your-database-url>',
-  storageBucket: 'gs://first-backend-nodejs.appspot.com/',
-};
-const firebaseApp = initializeApp(firebaseConfig);
-const storage = getStorage(firebaseApp);
 
 const controller = {
   getProject: (req, res) => {
@@ -117,36 +107,31 @@ const controller = {
   },
 
   putProjectImage: (req, res) => {
-    // const { id } = req.params;
-    // if (id.length !== 24) {
-    //   return res.status(404).send();
-    // }
-    // // const { image } = req.files;
-    return res.status(201).send(req.files.image.path);
-    // const imageName = image.path.split('/').pop();
-    // const imageExtension = imageName.split('.').pop().toLowerCase();
-    // const validExtensions = ['jpg', 'jpeg', 'png'];
-    // if (image && validExtensions.includes(imageExtension)) {
-    //   Project.findByIdAndUpdate(
-    //     id,
-    //     { image: imageName },
-    //     { new: true },
-    //     (err, projectUpdated) => {
-    //       if (err) {
-    //         return res.status(500).send();
-    //       }
-    //       if (!projectUpdated) {
-    //         return res.status(404).send();
-    //       }
-    //       return res.status(201).send(projectUpdated);
-    //     }
-    //   );
-    // } else {
-    //   if (image) {
-    //     fs.unlink(image.path, () => {});
-    //   }
-    //   return res.status(400).send();
-    // }
+    const { id } = req.params;
+    const { image } = req.body;
+
+    if (id.length !== 24) {
+      return res.status(404).send();
+    }
+
+    if (!image) {
+      return res.status(400).send();
+    }
+
+    Project.findByIdAndUpdate(
+      id,
+      { image },
+      { new: true },
+      (err, projectUpdated) => {
+        if (err) {
+          return res.status(500).send();
+        }
+        if (!projectUpdated) {
+          return res.status(404).send();
+        }
+        return res.status(201).send(projectUpdated);
+      }
+    );
   },
 };
 
